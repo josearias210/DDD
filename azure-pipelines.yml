@@ -45,7 +45,14 @@ stages:
         command: 'build'
         arguments: '--configuration $(buildConfiguration)'
         projects: 'src/*.sln'
-        
+
+    - task: DotNetCoreCLI@2
+      displayName: "dotnet tests"
+      inputs:
+        command: 'test'
+        projects: 'src/*.Unit.Tests/*.csproj'
+        arguments: '--configuration $(buildConfiguration)'
+
     - task: DotNetCoreCLI@2
       displayName: "dotnet pack"
       inputs:
