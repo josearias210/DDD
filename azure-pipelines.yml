@@ -47,7 +47,7 @@ stages:
         projects: 'src/*.sln'
 
     - task: DotNetCoreCLI@2
-      displayName: "dotnet tests"
+      displayName: 'dotnet tests'
       inputs:
         command: 'test'
         projects: 'src/*.Unit.Tests/*.csproj'
@@ -101,19 +101,19 @@ stages:
       displayName: 'deploy artifacts'
       environment: 'nuget'
       strategy:
-      runOnce:
-        deploy:
-          steps:  
-          - task: DownloadPipelineArtifact@2
-            displayName: 'download artifacts'
-            inputs:
-              path: '$(Build.ArtifactStagingDirectory)'
-              patterns: '**/*.nupkg'
+        runOnce:
+          deploy:
+            steps:  
+            - task: DownloadPipelineArtifact@2
+              displayName: 'download artifacts'
+              inputs:
+                path: '$(Build.ArtifactStagingDirectory)'
+                patterns: '**/*.nupkg'
 
-          - task: NuGetCommand@2
-            displayName: 'NuGet push'
-            inputs:
-              command: push
-              packagesToPush: '$(Build.ArtifactStagingDirectory)/drop/josearias210.DDD.*.nupkg'
-              nuGetFeedType: external
-              publishFeedCredentials: '$(publishFeedCredentials)'
+            - task: NuGetCommand@2
+              displayName: 'NuGet push'
+              inputs:
+                command: push
+                packagesToPush: '$(Build.ArtifactStagingDirectory)/drop/josearias210.DDD.*.nupkg'
+                nuGetFeedType: external
+                publishFeedCredentials: '$(publishFeedCredentials)'
