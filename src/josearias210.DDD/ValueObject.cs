@@ -1,7 +1,21 @@
-﻿namespace josearias210.DDD;
+﻿using josearias210.DDD.Exceptions;
+
+namespace josearias210.DDD;
 
 public abstract class ValueObject
 {
+    public override bool Equals(object? obj)
+    {
+        if (obj == null || obj.GetType() != GetType())
+        {
+            return false;
+        }
+
+        var other = (ValueObject)obj;
+
+        return this.GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
+    }
+
     protected static bool EqualOperator(ValueObject left, ValueObject right)
     {
         if (ReferenceEquals(left, null) ^ ReferenceEquals(right, null))
@@ -15,22 +29,17 @@ public abstract class ValueObject
 
     protected abstract IEnumerable<object> GetEqualityComponents();
 
-    public override bool Equals(object? obj)
-    {
-        if (obj == null || obj.GetType() != GetType())
-        {
-            return false;
-        }
-
-        var other = (ValueObject)obj;
-
-        return this.GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
-    }
-
     public override int GetHashCode()
     {
         return GetEqualityComponents()
             .Select(x => x != null ? x.GetHashCode() : 0)
             .Aggregate((x, y) => x ^ y);
+    }
+    protected static void CheckRule(IBusinessRule rule)
+    {
+        if (rule.IsBroken())
+        {
+            throw new BusinessRuleValidationException(rule);
+        }
     }
 }
