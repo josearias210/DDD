@@ -1,0 +1,112 @@
+name: 1.0.$(rev:.r)
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - refs/heads/main
+      - refs/heads/develop
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  dotnetSdk: 6.x
+  nuGetVersion: 6.2.0
+  nugetPackageVersion: '1.5.0-preview'
+  buildConfiguration: 'Release'
+  publishFeedCredentials: 'nuget-devops'
+  publishVstsFeed:  '084cb3a2-76a5-4b82-a8b8-dbfec34a662b/d6904f22-a609-45e4-abf4-55af2ffdb059'
+
+stages:
+- stage: build
+  jobs:
+  - job: code
+    steps:
+    - task: NuGetToolInstaller@0
+      displayName: 'use NuGet $(nuGetVersion)'
+      inputs:
+        versionSpec: '$(nuGetVersion)'
+
+    - task: UseDotNet@2
+      displayName: 'use dotnet SDK $(dotnetSdk)'
+      inputs:
+        packageType: sdk
+        version: '$(dotnetSdk)'
+        
+    - task: NuGetCommand@2
+      displayName: 'nuget restore'
+      inputs:
+        restoreSolution: 'src/*.sln' 
+
+    - task: DotNetCoreCLI@2
+      displayName: 'dotnet build'
+      inputs:
+        command: 'build'
+        arguments: '--configuration $(buildConfiguration)'
+        projects: 'src/*.sln'
+        
+    - task: DotNetCoreCLI@2
+      displayName: "dotnet pack"
+      inputs:
+        command: 'pack'
+        packagesToPack: 'src/josearias210.DDD/josearias210.DDD.csproj'
+        nobuild: true
+        versioningScheme: 'byEnvVar'
+        versionEnvVar: 'nugetPackageVersion'
+  
+    - task: PublishPipelineArtifact@1
+      displayName: 'Publish Artifact to Pipeline'
+      inputs:
+        targetPath: '$(Build.ArtifactStagingDirectory)'
+        artifactName: drop  
+
+- ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
+  - stage: release_azure_devops
+    displayName: 'release azure devops'
+    dependsOn: build
+    jobs:
+    - job: deploy_azure_devops_artifacts
+      displayName: 'deploy artifacts'
+      steps:
+
+      - task: DownloadPipelineArtifact@2
+        displayName: 'download artifacts'
+        inputs:
+          path: '$(Build.ArtifactStagingDirectory)'
+          patterns: '**/*.nupkg'
+
+      - task: NuGetCommand@2
+        displayName: 'nuget push'
+        inputs:
+          command: 'push'
+          packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg'
+          nuGetFeedType: 'internal'
+          publishVstsFeed: '$(publishVstsFeed)'
+          allowPackageConflicts: true
+ 
+- ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
+  - stage: release_nuget_org
+    displayName: 'release nuget.org'
+    dependsOn: release_azure_devops
+    jobs:
+    - deployment: 'deploy_nuget_org_artifacts'
+      displayName: 'deploy artifacts'
+      environment: 'nuget'
+      strategy:
+      runOnce:
+        deploy:
+          steps:  
+          - task: DownloadPipelineArtifact@2
+            displayName: 'download artifacts'
+            inputs:
+              path: '$(Build.ArtifactStagingDirectory)'
+              patterns: '**/*.nupkg'
+
+          - task: NuGetCommand@2
+            displayName: 'NuGet push'
+            inputs:
+              command: push
+              packagesToPush: '$(Build.ArtifactStagingDirectory)/drop/josearias210.DDD.*.nupkg'
+              nuGetFeedType: external
+              publishFeedCredentials: '$(publishFeedCredentials)'
