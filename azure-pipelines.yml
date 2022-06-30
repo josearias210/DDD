@@ -6,6 +6,10 @@ trigger:
     include:
       - refs/heads/main
       - refs/heads/develop
+  paths:
+    include:
+      - src
+      - azure-pipelines.yml
 
 pool:
   vmImage: 'ubuntu-latest'
