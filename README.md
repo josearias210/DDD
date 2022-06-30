@@ -220,13 +220,13 @@ Standardizing responses is very commonly done. For that there are classes for th
             if (string.IsNullOrEmpty(Name))
             {
                 return new ErrorResult("Name is required");
-				// or
-				/*
-				 return new ErrorResult(Name is required", new List<Error>
+		// or
+		/*
+		return new ErrorResult(Name is required", new List<Error>
                 {
                     new Error("Name null or empty")
                 }});
-				*/
+		*/
             }
 
             return new SuccessResult();
@@ -264,7 +264,7 @@ Standardizing responses is very commonly done. For that there are classes for th
                 };
 
             return new SuccessResult<List<Order>>(orders);
-			// or fails
+           // or fails
            // return new ErrorResult<List<Order>>("Error the read orders");
         }
     }
