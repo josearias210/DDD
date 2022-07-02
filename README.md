@@ -29,10 +29,8 @@ This package has the following utilities:
 - Error
 - ErrorResult
 
-### Documentation:
-
 #### IAggregateRoot
-Interface used to mark classes as an aggregate IAggregateRoot
+Interface used to mark classes IAggregateRoot.
 
 ```csharp
     public class Order : IAggregateRoot
@@ -41,18 +39,18 @@ Interface used to mark classes as an aggregate IAggregateRoot
     }
 ```
 
-Almost always a class marked as IAggregateRoot, must extend Entity class. We will see these later
+Almost always a class marked as IAggregateRoot, must extend Entity class. We will see these later.
 
 #### IRepository<T>
 
-Interface that is used to mark a class that is going to be a repository for an IAggregateRoot.
+Interface that is used to mark a class that is going to be a repository for an IAggregateRoot class.
 
 ```csharp
     public class OrderRepository : IRepository<Order>
     {
     }
 ```
-*Why don't you have the basic methods of crud? * this comes from the library documentation, but the short answer would be because we cannot guarantee that the IAggregateRoot allow all the basic operations of the crud, also the generic names in the actions are always avoided
+**Why don't you have the basic methods of crud?** this comes from the library documentation, but the short answer would be because we cannot guarantee that the IAggregateRoot allow all the basic operations of the crud, also the generic names in the actions are always avoided
 
 #### IBusinessRule
 
@@ -236,7 +234,7 @@ Standardizing responses is very commonly done. For that there are classes for th
 
 - **SuccessResult<T>**:  This class is similar to SuccessResult, but allows you to return data.
 
-- **ErrorResult<T: This is a class that represents a failed operation.  We can send only the error message and we want a list of errors with more detail.
+- **ErrorResult<T>**: This is a class that represents a failed operation.  We can send only the error message and we want a list of errors with more detail.
 
 ```csharp
     class Person
@@ -269,6 +267,13 @@ Standardizing responses is very commonly done. For that there are classes for th
         }
     }
 ```
+
+## Contributing
+1. Fork it!
+2. Create your feature branch: `git checkout -b my-new-feature`
+3. Commit your changes: `git commit -am 'Add some feature'`
+4. Push to the branch: `git push origin my-new-feature`
+5. Submit a pull request
 
 ## Authors
 
