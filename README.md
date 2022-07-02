@@ -275,6 +275,11 @@ Standardizing responses is very commonly done. For that there are classes for th
 4. Push to the branch: `git push origin my-new-feature`
 5. Submit a pull request
 
+## Reference
+- [alexdunn.org](https://josef.codes/my-take-on-the-result-class-in-c-sharp)
+- [docs.microsoft.com](https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/ddd-oriented-microservice)
+- [enterprisecraftsmanship.com](https://enterprisecraftsmanship.com/posts)
+
 ## Authors
 
 - [@josearias210](https://www.github.com/josearias210)
