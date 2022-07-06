@@ -2,7 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
-## 2022-07-02 (1.7.0)
+## 1.8.0
+
+### Added
+
+- Support for net6.0
+- Support for netcoreapp3.1
+- Support for netcoreapp2.1
+- Support for net47
+
+
+## 1.7.0
 
 ### Added
 

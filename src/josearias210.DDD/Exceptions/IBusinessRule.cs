@@ -1,7 +1,9 @@
-﻿namespace josearias210.DDD.Exceptions;
-
-public interface IBusinessRule
+﻿namespace josearias210.DDD.Exceptions
 {
-    bool IsBroken();
-    string Message { get; }
+
+    public interface IBusinessRule
+    {
+        bool IsBroken();
+        string Message { get; }
+    }
 }

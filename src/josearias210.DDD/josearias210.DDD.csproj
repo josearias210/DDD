@@ -1,15 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+	<PropertyGroup>
+		<TargetFrameworks>net6.0;netcoreapp3.1;netcoreapp2.1;net47</TargetFrameworks>
+	</PropertyGroup>
 
-	<Authors>josearias210</Authors>
-	<PackageDescription>Library DDD</PackageDescription>
-	<RepositoryUrl>https://github.com/josearias210/DDD</RepositoryUrl>
-	<Description>Library that offers basic utilities to start working with DDD</Description>
-	<PackageProjectUrl>https://github.com/josearias210/DDD</PackageProjectUrl> 
-  </PropertyGroup>
+	<Import Project="$(MSBuildProjectDirectory)\..\..\build\frameworks\net6.0.props" Condition=" '$(TargetFramework)' == 'net6.0' " />
+	<Import Project="$(MSBuildProjectDirectory)\..\..\build\frameworks\netcoreapp3.1.props" Condition=" '$(TargetFramework)' == 'netcoreapp3.1' " />
+	<Import Project="$(MSBuildProjectDirectory)\..\..\build\frameworks\netcoreapp2.1.props" Condition=" '$(TargetFramework)' == 'netcoreapp2.1' " />
+	<Import Project="$(MSBuildProjectDirectory)\..\..\build\frameworks\net47.props" Condition=" '$(TargetFramework)' == 'net47' " />
+
+	<PropertyGroup>
+		<AssemblyName>josearias210.DDD</AssemblyName>
+		<Authors>Jose Antonio Arias R.</Authors>
+		<Description>Library that offers basic utilities to start working with DDD</Description>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<IncludeSymbols>true</IncludeSymbols>
+		<PackageDescription>Library DDD</PackageDescription>
+		<RepositoryUrl>https://github.com/josearias210/DDD</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/josearias210/DDD</PackageProjectUrl>
+		<PackageId>josearias210.DDD</PackageId>
+		<PackageReleaseNotes>Continuous Integration</PackageReleaseNotes>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>		
+	</PropertyGroup>
 
 </Project>

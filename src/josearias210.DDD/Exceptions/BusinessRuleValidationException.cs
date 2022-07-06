@@ -1,15 +1,18 @@
-﻿namespace josearias210.DDD.Exceptions;
-
-public class BusinessRuleValidationException : Exception
+﻿namespace josearias210.DDD.Exceptions
 {
-    public IBusinessRule BrokenRule { get; }
-    public string Details { get; }
+    using System;
 
-    public BusinessRuleValidationException(IBusinessRule brokenRule) : base(brokenRule.Message)
+    public class BusinessRuleValidationException : Exception
     {
-        BrokenRule = brokenRule;
-        Details = brokenRule.Message;
-    }
+        public IBusinessRule BrokenRule { get; }
+        public string Details { get; }
 
-    public override string ToString() => $"{BrokenRule.GetType().FullName}: {BrokenRule.Message}";
+        public BusinessRuleValidationException(IBusinessRule brokenRule) : base(brokenRule.Message)
+        {
+            BrokenRule = brokenRule;
+            Details = brokenRule.Message;
+        }
+
+        public override string ToString() => $"{BrokenRule.GetType().FullName}: {BrokenRule.Message}";
+    }
 }

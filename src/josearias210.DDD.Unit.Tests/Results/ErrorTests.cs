@@ -1,37 +1,39 @@
-﻿namespace josearias210.DDD.Unit.Tests;
-
-using josearias210.DDD.Results;
-
-public class ErrorTests
+﻿namespace josearias210.DDD.Unit.Tests.Results
 {
-    [Fact]
-    public void ErrorWithDetailsTests()
+    using Xunit;
+    using josearias210.DDD.Results;
+
+    public class ErrorTests
     {
-        // Arrange
-        string details = "Message error";
+        [Fact]
+        public void ErrorWithDetailsTests()
+        {
+            // Arrange
+            string details = "Message error";
 
-        // Act
-        var error = new Error(details);
+            // Act
+            var error = new Error(details);
 
-        // Assert
-        Assert.NotNull(error);
-        Assert.Equal(details, error.Details);
-        Assert.Null(error.Code);
-    }
+            // Assert
+            Assert.NotNull(error);
+            Assert.Equal(details, error.Details);
+            Assert.Null(error.Code);
+        }
 
-    [Fact]
-    public void ErrorWithCodeAndDetailsTests()
-    {
-        // Arrange
-        string code = "code";
-        string details = "Message error";
+        [Fact]
+        public void ErrorWithCodeAndDetailsTests()
+        {
+            // Arrange
+            string code = "code";
+            string details = "Message error";
 
-        // Act
-        var error = new Error(code, details);
+            // Act
+            var error = new Error(code, details);
 
-        // Assert
-        Assert.NotNull(error);
-        Assert.Equal(details, error.Details);
-        Assert.Equal(code, error.Code);
+            // Assert
+            Assert.NotNull(error);
+            Assert.Equal(details, error.Details);
+            Assert.Equal(code, error.Code);
+        }
     }
 }

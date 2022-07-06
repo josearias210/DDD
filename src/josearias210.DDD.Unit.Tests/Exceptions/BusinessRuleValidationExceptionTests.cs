@@ -1,41 +1,43 @@
-﻿namespace josearias210.DDD.Unit.Tests;
-
-using josearias210.DDD.Exceptions;
-
-public class BusinessRuleValidationExceptionTests
+﻿namespace josearias210.DDD.Unit.Tests.Exceptions
 {
-    [Fact]
-    public void ToStringTests()
+    using Xunit;
+    using josearias210.DDD.Exceptions;
+
+    public class BusinessRuleValidationExceptionTests
     {
-        // Arrange
-        var mockBusinessRule = new BusinessRuleMock();
-        var businessRuleValidation = new BusinessRuleValidationException(mockBusinessRule);
+        [Fact]
+        public void ToStringTests()
+        {
+            // Arrange
+            var mockBusinessRule = new BusinessRuleMock();
+            var businessRuleValidation = new BusinessRuleValidationException(mockBusinessRule);
 
-        // Act
-        var messageResult = businessRuleValidation.ToString();
+            // Act
+            var messageResult = businessRuleValidation.ToString();
 
-        // Assert
-        Assert.NotNull(businessRuleValidation);
-        Assert.Equal($"{mockBusinessRule.GetType()}: {mockBusinessRule.Message}", messageResult);
+            // Assert
+            Assert.NotNull(businessRuleValidation);
+            Assert.Equal($"{mockBusinessRule.GetType()}: {mockBusinessRule.Message}", messageResult);
+        }
+
+        [Fact]
+        public void DtailTests()
+        {
+            // Arrange
+            var mockBusinessRule = new BusinessRuleMock();
+
+            // Act
+            var businessRuleValidation = new BusinessRuleValidationException(mockBusinessRule);
+
+            // Assert
+            Assert.NotNull(businessRuleValidation);
+            Assert.Equal(mockBusinessRule.Message, businessRuleValidation.Details);
+        }
     }
 
-    [Fact]
-    public void DtailTests()
+    public class BusinessRuleMock : IBusinessRule
     {
-        // Arrange
-        var mockBusinessRule = new BusinessRuleMock();
-
-        // Act
-        var businessRuleValidation = new BusinessRuleValidationException(mockBusinessRule);
-
-        // Assert
-        Assert.NotNull(businessRuleValidation);
-        Assert.Equal(mockBusinessRule.Message, businessRuleValidation.Details);
+        public string Message => "Message error";
+        public bool IsBroken() => true;
     }
-}
-
-public class BusinessRuleMock : IBusinessRule
-{
-    public string Message => "Message error";
-    public bool IsBroken() => true;
 }

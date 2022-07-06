@@ -1,47 +1,50 @@
-namespace josearias210.DDD.Unit.Tests;
-
-using josearias210.DDD.Results;
-
-public class ErrorResultTests
+namespace josearias210.DDD.Unit.Tests.Results
 {
-    [Fact]
-    public void ErrorResultWithMessage()
+    using Xunit;
+    using System.Collections.Generic;
+    using josearias210.DDD.Results;
+
+    public class ErrorResultTests
     {
-        // Arrange
-        string message = "Message error";
-
-        // Act
-        var result = new ErrorResult(message);
-
-        // Assert
-        Assert.NotNull(result);
-        Assert.False(result.IsSuccess);
-        Assert.Equal(message, result.Message);
-        Assert.Empty(result.Errors);
-    }
-
-    [Fact]
-    public void ErrorResultWithMessageAndErrors()
-    {
-        // Arrange
-        string message = "Message error";
-        Error error = new("Code1", "Details1");
-        List<Error> errors = new()
+        [Fact]
+        public void ErrorResultWithMessage()
         {
-            error
-        };
+            // Arrange
+            string message = "Message error";
 
-        // Act
-        var result = new ErrorResult(message, errors);
+            // Act
+            var result = new ErrorResult(message);
 
-        // Assert
-        Assert.NotNull(result);
-        Assert.False(result.IsSuccess);
-        Assert.Equal(message, result.Message);
-        Assert.Collection(result.Errors, e =>
+            // Assert
+            Assert.NotNull(result);
+            Assert.False(result.IsSuccess);
+            Assert.Equal(message, result.Message);
+            Assert.Empty(result.Errors);
+        }
+
+        [Fact]
+        public void ErrorResultWithMessageAndErrors()
         {
-            Assert.Equal(error.Code, e.Code);
-            Assert.Equal(error.Details, e.Details);
-        });
+            // Arrange
+            string message = "Message error";
+            var error = new Error("Code1", "Details1");
+            var errors = new List<Error>()
+            {
+                error
+            };
+
+            // Act
+            var result = new ErrorResult(message, errors);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.False(result.IsSuccess);
+            Assert.Equal(message, result.Message);
+            Assert.Collection(result.Errors, e =>
+            {
+                Assert.Equal(error.Code, e.Code);
+                Assert.Equal(error.Details, e.Details);
+            });
+        }
     }
 }

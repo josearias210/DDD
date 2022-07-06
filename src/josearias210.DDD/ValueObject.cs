@@ -1,45 +1,56 @@
-﻿using josearias210.DDD.Exceptions;
-
-namespace josearias210.DDD;
-
-public abstract class ValueObject
+﻿namespace josearias210.DDD
 {
-    public override bool Equals(object? obj)
+    using System.Linq;
+    using System.Collections.Generic;
+    using josearias210.DDD.Exceptions;
+
+    public abstract class ValueObject
     {
-        if (obj == null || obj.GetType() != GetType())
+#if NULLABLE
+        public override bool Equals(object? obj)
+#else
+        public override bool Equals(object obj)
+#endif
         {
-            return false;
+            if (obj == null || obj.GetType() != GetType())
+            {
+                return false;
+            }
+
+            var other = (ValueObject)obj;
+
+            return this.GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
         }
 
-        var other = (ValueObject)obj;
-
-        return this.GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
-    }
-
-    protected static bool EqualOperator(ValueObject left, ValueObject right)
-    {
-        if (ReferenceEquals(left, null) ^ ReferenceEquals(right, null))
+        protected static bool EqualOperator(ValueObject left, ValueObject right)
         {
-            return false;
+            if (ReferenceEquals(left, null) ^ ReferenceEquals(right, null))
+            {
+                return false;
+            }
+#if NULLABLE
+            return ReferenceEquals(left, null) || left.Equals(right!);
+#else
+      return ReferenceEquals(left, null) || left.Equals(right);
+#endif
         }
-        return ReferenceEquals(left, null) || left.Equals(right!);
-    }
 
-    protected static bool NotEqualOperator(ValueObject left, ValueObject right) => !(EqualOperator(left, right));
+        protected static bool NotEqualOperator(ValueObject left, ValueObject right) => !(EqualOperator(left, right));
 
-    protected abstract IEnumerable<object> GetEqualityComponents();
+        protected abstract IEnumerable<object> GetEqualityComponents();
 
-    public override int GetHashCode()
-    {
-        return GetEqualityComponents()
-            .Select(x => x != null ? x.GetHashCode() : 0)
-            .Aggregate((x, y) => x ^ y);
-    }
-    protected static void CheckRule(IBusinessRule rule)
-    {
-        if (rule.IsBroken())
+        public override int GetHashCode()
         {
-            throw new BusinessRuleValidationException(rule);
+            return GetEqualityComponents()
+                .Select(x => x != null ? x.GetHashCode() : 0)
+                .Aggregate((x, y) => x ^ y);
+        }
+        protected static void CheckRule(IBusinessRule rule)
+        {
+            if (rule.IsBroken())
+            {
+                throw new BusinessRuleValidationException(rule);
+            }
         }
     }
 }

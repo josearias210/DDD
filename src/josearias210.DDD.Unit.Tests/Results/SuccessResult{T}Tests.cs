@@ -1,22 +1,25 @@
-namespace josearias210.DDD.Unit.Tests;
-
-using josearias210.DDD.Results;
-
-public class SuccessResultTTests
+namespace josearias210.DDD.Unit.Tests.Results
 {
-    [Fact]
-    public void SuccessResult()
+    using Xunit;
+    using System;
+    using josearias210.DDD.Results;
+
+    public class SuccessResultTTests
     {
-        // Arrange
-        string data = "data";
-        Type type = data.GetType();
+        [Fact]
+        public void SuccessResult()
+        {
+            // Arrange
+            string data = "data";
+            Type type = data.GetType();
 
-        // Act
-        var result = new SuccessResult<string>(data);
+            // Act
+            var result = new SuccessResult<string>(data);
 
-        // Assert
-        Assert.NotNull(result);
-        Assert.True(result.IsSuccess);
-        Assert.IsAssignableFrom(type, result.Data);
+            // Assert
+            Assert.NotNull(result);
+            Assert.True(result.IsSuccess);
+            Assert.IsAssignableFrom(type, result.Data);
+        }
     }
 }
