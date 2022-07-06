@@ -1,7 +1,10 @@
-﻿namespace josearias210.DDD.Results;
-
-public interface IErrorResult
+﻿namespace josearias210.DDD.Results
 {
-    string Message { get; }
-    IReadOnlyCollection<Error> Errors { get; }
+    using System.Collections.Generic;
+
+    public interface IErrorResult
+    {
+        string Message { get; }
+        IReadOnlyCollection<Error> Errors { get; }
+    }
 }

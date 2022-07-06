@@ -1,17 +1,27 @@
-﻿namespace josearias210.DDD.Results;
-
-public class Error
+﻿namespace josearias210.DDD.Results
 {
-    public Error(string details) : this(null, details)
+    public class Error
     {
-    }
+        public Error(string details) : this(null, details)
+        {
+        }
 
-    public Error(string? code, string? details)
-    {
-        Code = code;
-        Details = details;
-    }
+#if NULLABLE
+        public Error(string? code, string? details)
+#else
+        public Error(string code, string details)
+#endif
+        {
+            Code = code;
+            Details = details;
+        }
 
-    public string? Code { get; }
-    public string? Details { get; }
+#if NULLABLE
+        public string? Code { get; }
+        public string? Details { get; }
+#else
+        public string Code { get; }
+        public string Details { get; }
+#endif
+    }
 }

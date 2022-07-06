@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0"
+  xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+	<PropertyGroup>
+		<LangVersion>8.0</LangVersion>
+		<Nullable>enable</Nullable>
+		<DefineConstants>NULLABLE</DefineConstants>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<!-- Testing -->
+		<CoverletCollectorVersion>3.1.0</CoverletCollectorVersion>
+		<MicrosoftNETTestSdkVersion>16.11.0</MicrosoftNETTestSdkVersion>
+		<XUnitVersion>2.4.1</XUnitVersion>
+		<XUnitAbstractionsVersion>2.0.3</XUnitAbstractionsVersion>
+		<XUnitRunnerVisualStudioVersion>2.4.3</XUnitRunnerVisualStudioVersion>
+	</PropertyGroup>
+</Project>

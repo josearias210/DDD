@@ -1,11 +1,12 @@
-﻿namespace josearias210.DDD.Results;
-
-public abstract class Result<T> : Result
+﻿namespace josearias210.DDD.Results
 {
-    public T Data { get; set; }
-
-    protected Result(T data)
+    public abstract class Result<T> : Result
     {
-        Data = data;
+        public T Data { get; set; }
+
+        protected Result(T data)
+        {
+            Data = data;
+        }
     }
 }

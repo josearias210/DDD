@@ -1,16 +1,17 @@
-﻿namespace josearias210.DDD;
-
-using josearias210.DDD.Exceptions;
-
-public abstract class Entity<TId>
+﻿namespace josearias210.DDD
 {
-    public TId Id { get; set; }
+    using josearias210.DDD.Exceptions;
 
-    protected static void CheckRule(IBusinessRule rule)
+    public abstract class Entity<TId>
     {
-        if (rule.IsBroken())
+        public TId Id { get; set; }
+
+        protected static void CheckRule(IBusinessRule rule)
         {
-            throw new BusinessRuleValidationException(rule);
+            if (rule.IsBroken())
+            {
+                throw new BusinessRuleValidationException(rule);
+            }
         }
     }
 }

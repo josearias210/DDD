@@ -1,9 +1,10 @@
-﻿namespace josearias210.DDD.Results;
-
-public class SuccessResult<T> : Result<T>
+﻿namespace josearias210.DDD.Results
 {
-    public SuccessResult(T data) : base(data)
+    public class SuccessResult<T> : Result<T>
     {
-        IsSuccess = true;
+        public SuccessResult(T data) : base(data)
+        {
+            IsSuccess = true;
+        }
     }
 }

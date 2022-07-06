@@ -1,18 +1,22 @@
-﻿namespace josearias210.DDD.Results;
-
-public class ErrorResult : Result, IErrorResult
+﻿namespace josearias210.DDD.Results
 {
-    public ErrorResult(string message) : this(message, Array.Empty<Error>())
-    {
-    }
+    using System;
+    using System.Collections.Generic;
 
-    public ErrorResult(string message, IReadOnlyCollection<Error> errors)
+    public class ErrorResult : Result, IErrorResult
     {
-        Message = message;
-        IsSuccess = false;
-        Errors = errors ?? Array.Empty<Error>();
-    }
+        public ErrorResult(string message) : this(message, Array.Empty<Error>())
+        {
+        }
 
-    public string Message { get; }
-    public IReadOnlyCollection<Error> Errors { get; }
+        public ErrorResult(string message, IReadOnlyCollection<Error> errors)
+        {
+            Message = message;
+            IsSuccess = false;
+            Errors = errors ?? Array.Empty<Error>();
+        }
+
+        public string Message { get; }
+        public IReadOnlyCollection<Error> Errors { get; }
+    }
 }
