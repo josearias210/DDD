@@ -12,7 +12,7 @@ trigger:
       - azure-pipelines.yml
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'windows-latest'
 
 variables:
   dotnetSdk: 6.x
@@ -54,7 +54,7 @@ stages:
       displayName: 'dotnet tests'
       inputs:
         command: 'test'
-        projects: 'src/*.Unit.Tests/*.csproj'
+        projects: 'src/*.Unit.Tests/*.csproj'     
         arguments: '--configuration $(buildConfiguration)'
 
     - task: DotNetCoreCLI@2
