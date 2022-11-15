@@ -1,9 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net6.0;netcoreapp3.1;netcoreapp2.1;net47</TargetFrameworks>
+		<TargetFrameworks>net7.0;net6.0;netcoreapp3.1;netcoreapp2.1;net47</TargetFrameworks>
 	</PropertyGroup>
 
+    <Import Project="$(MSBuildProjectDirectory)\..\..\build\frameworks\net7.0.props" Condition=" '$(TargetFramework)' == 'net7.0' " />
 	<Import Project="$(MSBuildProjectDirectory)\..\..\build\frameworks\net6.0.props" Condition=" '$(TargetFramework)' == 'net6.0' " />
 	<Import Project="$(MSBuildProjectDirectory)\..\..\build\frameworks\netcoreapp3.1.props" Condition=" '$(TargetFramework)' == 'netcoreapp3.1' " />
 	<Import Project="$(MSBuildProjectDirectory)\..\..\build\frameworks\netcoreapp2.1.props" Condition=" '$(TargetFramework)' == 'netcoreapp2.1' " />
