@@ -16,7 +16,7 @@ pool:
 
 variables:
   #dotnetSdk: 6.x
-  nuGetVersion: 6.2.0
+  nuGetVersion: 6.4.0
   nugetPackageVersion: '1.9.0'
   buildConfiguration: 'Release'
   publishFeedCredentials: 'nuget-devops'
@@ -31,6 +31,12 @@ stages:
       displayName: 'use NuGet $(nuGetVersion)'
       inputs:
         versionSpec: '$(nuGetVersion)'
+
+    - task: UseDotNet@2
+      displayName: 'use dotnet SDK 7.x'
+      inputs:
+        packageType: sdk
+        version: '7.x'
 
     - task: UseDotNet@2
       displayName: 'use dotnet SDK 6.x'
