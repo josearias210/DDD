@@ -10,14 +10,16 @@ trigger:
     include:
       - src
       - azure-pipelines.yml
+    exclude:
+      - README.md
 
 pool:
   vmImage: 'windows-latest'
 
 variables:
   #dotnetSdk: 6.x
-  nuGetVersion: 6.2.0
-  nugetPackageVersion: '1.8.0'
+  nuGetVersion: 6.4.0
+  nugetPackageVersion: '1.9.0'
   buildConfiguration: 'Release'
   publishFeedCredentials: 'nuget-devops'
   publishVstsFeed:  '084cb3a2-76a5-4b82-a8b8-dbfec34a662b/d6904f22-a609-45e4-abf4-55af2ffdb059'
@@ -31,6 +33,12 @@ stages:
       displayName: 'use NuGet $(nuGetVersion)'
       inputs:
         versionSpec: '$(nuGetVersion)'
+
+    - task: UseDotNet@2
+      displayName: 'use dotnet SDK 7.x'
+      inputs:
+        packageType: sdk
+        version: '7.x'
 
     - task: UseDotNet@2
       displayName: 'use dotnet SDK 6.x'
