@@ -8,6 +8,9 @@ All notable changes to this project will be documented in this file.
 
 - Support for net7.0
 
+### Updated
+
+-  Remove the README.md from the pipeline
 
 ## 1.8.0
 

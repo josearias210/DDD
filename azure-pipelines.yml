@@ -10,6 +10,8 @@ trigger:
     include:
       - src
       - azure-pipelines.yml
+    exclude:
+      - README.md
 
 pool:
   vmImage: 'windows-latest'
