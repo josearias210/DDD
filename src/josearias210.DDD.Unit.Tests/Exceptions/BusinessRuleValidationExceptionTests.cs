@@ -9,7 +9,7 @@
         public void ToStringTests()
         {
             // Arrange
-            var mockBusinessRule = new BusinessRuleMock();
+            var mockBusinessRule = new BusinessRuleStub();
             var businessRuleValidation = new BusinessRuleValidationException(mockBusinessRule);
 
             // Act
@@ -21,10 +21,10 @@
         }
 
         [Fact]
-        public void DtailTests()
+        public void DetailTests()
         {
             // Arrange
-            var mockBusinessRule = new BusinessRuleMock();
+            var mockBusinessRule = new BusinessRuleStub();
 
             // Act
             var businessRuleValidation = new BusinessRuleValidationException(mockBusinessRule);
@@ -35,7 +35,7 @@
         }
     }
 
-    public class BusinessRuleMock : IBusinessRule
+    class BusinessRuleStub : IBusinessRule
     {
         public string Message => "Message error";
         public bool IsBroken() => true;
