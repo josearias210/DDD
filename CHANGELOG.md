@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.10.0
+
+### Added
+
+- Add tests
+- Support for domain event
+
+### Updated
+
+-  Fix typo nad warning
+
 ## 1.9.0
 
 ### Added
