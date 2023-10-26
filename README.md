@@ -1,5 +1,5 @@
 # Library DDD 
-[![Version](https://img.shields.io/nuget/v/josearias210.DDD)](https://www.nuget.org/packages/josearias210.DDD) [![Build Status](https://dev.azure.com/AntonioProductos/Simple%20DDD/_apis/build/status%2Fjosearias210.DDD?branchName=main)](https://dev.azure.com/AntonioProductos/Simple%20DDD/_build/latest?definitionId=16&branchName=main)
+[![Version](https://img.shields.io/nuget/v/josearias210.DDD)](https://www.nuget.org/packages/josearias210.DDD) [![Build Status](https://dev.azure.com/AntonioProductos/Simple%20DDD/_apis/build/status%2Fjosearias210.DDD?branchName=master)](https://dev.azure.com/AntonioProductos/Simple%20DDD/_build/latest?definitionId=16&branchName=master)
 
 
 Library that offers basic utilities to start working with DDD
