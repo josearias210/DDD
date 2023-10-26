@@ -9,7 +9,12 @@
         {
         }
 
+#if NULLABLE
+        public ErrorResult(string message, IReadOnlyCollection<Error> errors) : base(default!)
+#else
         public ErrorResult(string message, IReadOnlyCollection<Error> errors) : base(default)
+#endif
+
         {
             Message = message;
             IsSuccess = false;

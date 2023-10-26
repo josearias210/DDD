@@ -1,7 +1,5 @@
 # Library DDD 
-[![Version](https://img.shields.io/nuget/v/josearias210.DDD)](https://www.nuget.org/packages/josearias210.DDD)
-[![Build Status](https://dev.azure.com/josearias210Personal/Nugets/_apis/build/status/josearias210.DDD?branchName=main)](https://dev.azure.com/josearias210Personal/Nugets/_build/latest?definitionId=10&branchName=main)
-
+[![Version](https://img.shields.io/nuget/v/josearias210.DDD)](https://www.nuget.org/packages/josearias210.DDD) [![Build Status](https://dev.azure.com/AntonioProductos/Simple%20DDD/_apis/build/status%2Fjosearias210.DDD?branchName=main)](https://dev.azure.com/AntonioProductos/Simple%20DDD/_build/latest?definitionId=16&branchName=main)
 
 
 Library that offers basic utilities to start working with DDD
@@ -23,6 +21,7 @@ This package has the following utilities:
 - IBusinessRule
 - Entity<T>
 - ValueObject
+- DomainEvent
 
 ### Extras:
 - SuccessResult
@@ -124,6 +123,119 @@ When inherited from the Entity class, a method is available for business rule va
 
 You can use as many rules as you want, when one fails automatically the exception will be returned.
 
+#### Domain Event
+
+This class allows us to generate our domain events that are associated with an Entity. We just need to extend this class. We can pass all the additional information that is needed to the class constructor.
+
+```csharp
+public class OrderCreatedDomainEvent : DomainEvent
+{
+    public OrderCreatedDomainEvent() { }
+}
+```
+
+Now we can add our event to the list of events available to publish to the domain.
+
+```csharp
+public class Order : Entity<Guid>
+{
+    public string Code { get; private set; }
+    public string Description { get; private set; }
+
+    private Order(string code, string description)
+    {
+        this.Code = code;
+        this.Description = description;
+    }
+
+    public static Order Create(string code, string description)
+    {
+        Order order = new Order(code, description);
+        order.AddDomainEvent(new OrderCreatedDomainEvent());
+        return order;
+    }
+}
+```
+
+When we need to access our domain events we can do so through the "DomainEvents" property of our entity.
+
+```csharp
+Order order = Order.Create("0001", "Order Test");
+
+foreach (var e in order.DomainEvents)
+{
+    Console.WriteLine(e.Id);
+    Console.WriteLine(e.Type);
+    Console.WriteLine(e.OccurredOn);
+    Console.WriteLine(e.IsPublished);
+}
+```
+
+You can see we have some properties available for all events:
+
+- **Id:** It is a Guid that is generated when the event is created
+- **Type:** This string that corresponds to the class name of the event
+- **OccurredOn:** The creation date of the event, by default it is UTC
+- **IsPublished:** Boolean value that indicates whether the event has already been published or not, by default it is false at the time of event creation.
+
+If you want an event to be marked as published we must call the "Published" method of the domain event.
+
+```csharp
+Order order = Order.Create("0001", "Order Test");
+
+foreach (var e in order.DomainEvents)
+{
+    e.Published();
+}
+```
+
+If we want to publish all the events simultaneously using the "PublishAllEvents" method of the entity.
+
+```csharp
+Order order = Order.Create("0001", "Order Test");
+order.PublishAllEvents();
+```
+
+#### **NOTE:**
+The objective of this library in event management is to facilitate the work in the management of domain rules and events. It is the developer's responsibility to find the mechanism to make "real" publication of the event(Example mediator for synchronous process).
+
+For example, if you are using mediatoR and EF to save to the database, you can override SaveChangesAsync in the context to get the domain events and process it. 
+
+```csharp
+        public async override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            int result = await base.SaveChangesAsync(cancellationToken);
+            var entitiesWithEvents = ChangeTracker.Entries<Entity<Guid>>()
+                .Select(e => e.Entity)
+                .Where(e => e.DomainEvents.Any())
+                .ToArray();
+
+            foreach (var entity in entitiesWithEvents)
+            {
+                foreach (var @event in entity.DomainEvents)
+                {
+                    await _mediator.Send(@event); // Is sample
+                    @event.Published();
+                }
+            }
+            return result;
+        }
+    
+ ```
+
+We should also add "IRequest" from mediator to our event.
+
+```csharp
+public class CreateOrderDomainEvent : DomainEvent, IRequest
+{
+    public string Code { get; }
+
+    public CreateOrderDomainEvent(string code)
+    {
+        this.Code = code;
+    }
+}
+  ```
 #### ValueObject
 
 It is a class used to create a ValueObject.
