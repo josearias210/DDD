@@ -19,7 +19,7 @@ pool:
 variables:
   #dotnetSdk: 6.x
   nuGetVersion: 6.4.0
-  nugetPackageVersion: '1.10.1'
+  nugetPackageVersion: '1.11.0'
   buildConfiguration: 'Release'
   publishFeedCredentials: 'nuget-devops'
   publishVstsFeed:  '9e255e84-89be-45b6-8204-7e067e291e8c/0a8f441d-a616-4424-b6a8-1aac73cf855b'
