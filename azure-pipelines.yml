@@ -34,6 +34,12 @@ stages:
         versionSpec: '$(nuGetVersion)'
 
     - task: UseDotNet@2
+      displayName: 'use dotnet SDK 9.x'
+      inputs:
+        packageType: sdk
+        version: '9.x'
+
+    - task: UseDotNet@2
       displayName: 'use dotnet SDK 8.x'
       inputs:
         packageType: sdk
