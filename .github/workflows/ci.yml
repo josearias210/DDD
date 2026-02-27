@@ -64,28 +64,9 @@ jobs:
           name: drop
           path: artifacts/*.nupkg
 
-  release_azure_devops:
-    if: github.ref == 'refs/heads/master'
-    needs: build
-    runs-on: windows-latest
-
-    steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: drop
-          path: artifacts
-
-      - name: NuGet push to Azure Artifacts
-        shell: pwsh
-        run: |
-          Get-ChildItem -Path artifacts -Filter *.nupkg -File | ForEach-Object {
-            dotnet nuget push $_.FullName --source "${{ secrets.AZURE_ARTIFACTS_SOURCE_URL }}" --api-key "${{ secrets.AZURE_ARTIFACTS_API_KEY }}" --skip-duplicate
-          }
-
   release_nuget_org:
     if: github.ref == 'refs/heads/master'
-    needs: release_azure_devops
+    needs: build
     runs-on: windows-latest
     environment: nuget
 
