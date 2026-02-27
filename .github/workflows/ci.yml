@@ -10,6 +10,9 @@ on:
       - '.github/workflows/ci.yml'
       - '!README.md'
 
+permissions:
+  contents: read
+
 env:
   NUGET_VERSION: 6.8.0
   NUGET_PACKAGE_VERSION: 2.0.0
@@ -74,7 +77,11 @@ jobs:
           path: artifacts
 
       - name: NuGet push to Azure Artifacts
-        run: dotnet nuget push "artifacts/**/*.nupkg" --source "${{ secrets.AZURE_ARTIFACTS_SOURCE_URL }}" --api-key "${{ secrets.AZURE_ARTIFACTS_API_KEY }}" --skip-duplicate
+        shell: pwsh
+        run: |
+          Get-ChildItem -Path artifacts -Filter *.nupkg -File | ForEach-Object {
+            dotnet nuget push $_.FullName --source "${{ secrets.AZURE_ARTIFACTS_SOURCE_URL }}" --api-key "${{ secrets.AZURE_ARTIFACTS_API_KEY }}" --skip-duplicate
+          }
 
   release_nuget_org:
     if: github.ref == 'refs/heads/master'
@@ -90,4 +97,8 @@ jobs:
           path: artifacts
 
       - name: NuGet push to NuGet.org
-        run: dotnet nuget push "artifacts/josearias210.DDD.*.nupkg" --source "https://api.nuget.org/v3/index.json" --api-key "${{ secrets.NUGET_ORG_API_KEY }}" --skip-duplicate
+        shell: pwsh
+        run: |
+          Get-ChildItem -Path artifacts -Filter josearias210.DDD.*.nupkg -File | ForEach-Object {
+            dotnet nuget push $_.FullName --source "https://api.nuget.org/v3/index.json" --api-key "${{ secrets.NUGET_ORG_API_KEY }}" --skip-duplicate
+          }
