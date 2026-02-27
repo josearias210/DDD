@@ -1,15 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net9.0;net8.0;net7.0;net6.0;netcoreapp3.1;netcoreapp2.1;net47</TargetFrameworks>
+		<TargetFrameworks>net10.0;net9.0;net8.0</TargetFrameworks>
 	</PropertyGroup>
+	<Import Project="$(MSBuildProjectDirectory)\..\..\build\frameworks\net10.0.props" Condition=" '$(TargetFramework)' == 'net10.0' " />
 	<Import Project="$(MSBuildProjectDirectory)\..\..\build\frameworks\net9.0.props" Condition=" '$(TargetFramework)' == 'net9.0' " />
     <Import Project="$(MSBuildProjectDirectory)\..\..\build\frameworks\net8.0.props" Condition=" '$(TargetFramework)' == 'net8.0' " />
-    <Import Project="$(MSBuildProjectDirectory)\..\..\build\frameworks\net7.0.props" Condition=" '$(TargetFramework)' == 'net7.0' " />
-	<Import Project="$(MSBuildProjectDirectory)\..\..\build\frameworks\net6.0.props" Condition=" '$(TargetFramework)' == 'net6.0' " />
-	<Import Project="$(MSBuildProjectDirectory)\..\..\build\frameworks\netcoreapp3.1.props" Condition=" '$(TargetFramework)' == 'netcoreapp3.1' " />
-	<Import Project="$(MSBuildProjectDirectory)\..\..\build\frameworks\netcoreapp2.1.props" Condition=" '$(TargetFramework)' == 'netcoreapp2.1' " />
-	<Import Project="$(MSBuildProjectDirectory)\..\..\build\frameworks\net47.props" Condition=" '$(TargetFramework)' == 'net47' " />
 
 	<PropertyGroup>
 		<AssemblyName>josearias210.DDD</AssemblyName>

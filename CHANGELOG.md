@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## Unreleased
+
+### Added
+
+- Support for net10.0
+
+### Removed
+
+- Support for net7.0
+- Support for net6.0
+- Support for netcoreapp3.1
+- Support for netcoreapp2.1
+- Support for net47
+
 ## 1.12.0
 
 ### Added

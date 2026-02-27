@@ -1,0 +1,104 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+    paths:
+      - 'src/**'
+      - '.github/workflows/ci.yml'
+      - '!README.md'
+
+permissions:
+  contents: read
+
+env:
+  NUGET_VERSION: 6.8.0
+  NUGET_PACKAGE_VERSION: 2.0.0
+  BUILD_CONFIGURATION: Release
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use NuGet ${{ env.NUGET_VERSION }}
+        uses: NuGet/setup-nuget@v2
+        with:
+          nuget-version: ${{ env.NUGET_VERSION }}
+
+      - name: Use .NET SDK 9.x
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.x
+
+      - name: Use .NET SDK 8.x
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.x
+
+      - name: Use .NET SDK 10.x
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.x
+
+      - name: NuGet restore
+        run: dotnet restore src/josearias210.sln
+
+      - name: Dotnet build
+        run: dotnet build src/josearias210.sln --configuration ${{ env.BUILD_CONFIGURATION }} --no-restore
+
+      - name: Dotnet tests
+        run: dotnet test src/josearias210.DDD.Unit.Tests/josearias210.DDD.Unit.Tests.csproj --configuration ${{ env.BUILD_CONFIGURATION }} --no-build
+
+      - name: Dotnet pack
+        run: dotnet pack src/josearias210.DDD/josearias210.DDD.csproj --configuration ${{ env.BUILD_CONFIGURATION }} --no-build -p:PackageVersion=${{ env.NUGET_PACKAGE_VERSION }} --output ${{ github.workspace }}/artifacts
+
+      - name: Publish artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: drop
+          path: artifacts/*.nupkg
+
+  release_azure_devops:
+    if: github.ref == 'refs/heads/master'
+    needs: build
+    runs-on: windows-latest
+
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: drop
+          path: artifacts
+
+      - name: NuGet push to Azure Artifacts
+        shell: pwsh
+        run: |
+          Get-ChildItem -Path artifacts -Filter *.nupkg -File | ForEach-Object {
+            dotnet nuget push $_.FullName --source "${{ secrets.AZURE_ARTIFACTS_SOURCE_URL }}" --api-key "${{ secrets.AZURE_ARTIFACTS_API_KEY }}" --skip-duplicate
+          }
+
+  release_nuget_org:
+    if: github.ref == 'refs/heads/master'
+    needs: release_azure_devops
+    runs-on: windows-latest
+    environment: nuget
+
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: drop
+          path: artifacts
+
+      - name: NuGet push to NuGet.org
+        shell: pwsh
+        run: |
+          Get-ChildItem -Path artifacts -Filter josearias210.DDD.*.nupkg -File | ForEach-Object {
+            dotnet nuget push $_.FullName --source "https://api.nuget.org/v3/index.json" --api-key "${{ secrets.NUGET_ORG_API_KEY }}" --skip-duplicate
+          }
