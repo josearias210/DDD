@@ -47,13 +47,13 @@ jobs:
           dotnet-version: 10.x
 
       - name: NuGet restore
-        run: dotnet restore src/*.sln
+        run: dotnet restore src/josearias210.sln
 
       - name: Dotnet build
-        run: dotnet build src/*.sln --configuration ${{ env.BUILD_CONFIGURATION }} --no-restore
+        run: dotnet build src/josearias210.sln --configuration ${{ env.BUILD_CONFIGURATION }} --no-restore
 
       - name: Dotnet tests
-        run: dotnet test src/*.Unit.Tests/*.csproj --configuration ${{ env.BUILD_CONFIGURATION }} --no-build
+        run: dotnet test src/josearias210.DDD.Unit.Tests/josearias210.DDD.Unit.Tests.csproj --configuration ${{ env.BUILD_CONFIGURATION }} --no-build
 
       - name: Dotnet pack
         run: dotnet pack src/josearias210.DDD/josearias210.DDD.csproj --configuration ${{ env.BUILD_CONFIGURATION }} --no-build -p:PackageVersion=${{ env.NUGET_PACKAGE_VERSION }} --output ${{ github.workspace }}/artifacts
